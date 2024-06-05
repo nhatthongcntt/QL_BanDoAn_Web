@@ -1,0 +1,38 @@
+﻿@model List<QL_BanDoAn.Models.Foods>
+
+@{
+    ViewBag.Title = "Danh sách món ăn";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<h2>Danh sách món ăn</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Ảnh</th>
+        <th>Tên</th>
+        <th>Thông tin</th>
+        <th>Giá</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.ImagePath == "")
+                {
+                    <img src="~/Images/noimage.jpg" width="100px" />
+                }
+                else
+                {
+                    <img src="@item.ImagePath" width="100px" />
+                }
+            </td>
+            <td>@Html.DisplayFor(model => item.Title)</td>
+            <td>@Html.DisplayFor(model => item.Description)</td>
+            <td>$ @Html.DisplayFor(model => item.Price)</td>
+
+        </tr>
+    }
+</table>
+
