@@ -1,0 +1,26 @@
+﻿@model QL_BanDoAn.Models.Foods
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<h2 class="text-center">Detail</h2>
+<div class="card w-50 m-auto mt-5">
+    <img src="@Model.ImagePath" class="card-img-top w-50 h-50 m-auto">
+    <div class="card-body">
+        <h5 class="card-title text-danger text-center">@Model.Title</h5>
+        <div class="row">
+            <h6 class="col-sm-2">Price:</h6>
+            <h6 class="col-sm-3 text-danger">$@Model.Price</h6>
+        </div>
+        <div class="row">
+            <h6 class="col-sm-2">Time:</h6>
+            <h6 class="col-sm-3 text-danger">@Model.TimeValue min</h6>
+        </div>
+        <h6>Description:</h6>
+        <p class="card-text">@Model.Description</p>
+        <a href="/Foods/" class="btn btn-primary">Back to Foods</a>
+    </div>
+</div>
+

@@ -11,8 +11,6 @@ namespace QL_BanDoAn.Controllers
 {
     public class CategoryController : Controller
     {
-        // GET: Category
-
         IFirebaseConfig config = new FirebaseConfig
         {
             AuthSecret = "zBat9CHGhKLYcr9BcldeMq4i0dS2rMxFhd3w36h3",
@@ -20,7 +18,7 @@ namespace QL_BanDoAn.Controllers
         };
         IFirebaseClient client;
 
-        // GET: Foods
+        // GET: Category
         public ActionResult Cat()
         {
             client = new FireSharp.FirebaseClient(config);

@@ -1,38 +1,29 @@
 ﻿@model List<QL_BanDoAn.Models.Foods>
 
 @{
-    ViewBag.Title = "Danh sách món ăn";
+    ViewBag.Title = "Foods";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
-<h2>Danh sách món ăn</h2>
-
-<table class="table table-bordered">
+<h2 class="text-center">Foods</h2>
+<a href="/Foods/Create/" style="margin-left:15%;">Create new food</a>
+<table class="table table-bordered w-75 m-auto mt-3">
     <tr>
-        <th>Ảnh</th>
-        <th>Tên</th>
-        <th>Thông tin</th>
-        <th>Giá</th>
+        <th>Name</th>
+        <th>Price</th>
         <th>Action</th>
     </tr>
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                @if (item.ImagePath == "")
-                {
-                    <img src="~/Images/noimage.jpg" width="100px" />
-                }
-                else
-                {
-                    <img src="@item.ImagePath" width="100px" />
-                }
+                <a href="/Foods/Detail/@item.Id/">@Html.DisplayFor(model => item.Title)</a> 
             </td>
-            <td>@Html.DisplayFor(model => item.Title)</td>
-            <td>@Html.DisplayFor(model => item.Description)</td>
             <td>$ @Html.DisplayFor(model => item.Price)</td>
-
+            <td>
+                <a href="#">Edit</a> |
+                <a href="#">Delete</a>
+            </td>
         </tr>
     }
 </table>
-
