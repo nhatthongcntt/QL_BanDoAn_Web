@@ -139,5 +139,22 @@ namespace QL_BanDoAn.Controllers
             }
             return "";
         }
+
+        public ActionResult Delete(string id)
+        {
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Get("Foods/"+id);
+            Foods data = response.ResultAs<Foods>();
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(Foods foods)
+        {
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Delete("/Foods/" + foods.Id);
+            return RedirectToAction("Index");
+        }
     }
 }
