@@ -271,6 +271,9 @@
     </Compile>
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Foods.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Price.cs" />
+    <Compile Include="Models\Time.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
