@@ -16,7 +16,7 @@ namespace QL_BanDoAn.Models
         public bool BestFood { get; set; }
         public double Price { get; set; }
         public int PriceId { get; set; }
-        public int numberInCart { get; set; }
+        public int LocationId { get; set; }
         public int TimeId { get; set; }
         public int TimeValue { get; set; }
 

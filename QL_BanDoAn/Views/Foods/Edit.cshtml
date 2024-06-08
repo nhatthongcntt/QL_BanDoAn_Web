@@ -1,18 +1,20 @@
 ﻿@model QL_BanDoAn.Models.Foods
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
-<h2 class="text-center">Create</h2>
+<h2 class="text-center">Edit</h2>
 
-@using (Html.BeginForm("Create", "Foods", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "Foods", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-
+    
 <div class="form-horizontal">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
     <div class="form-group">
         @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -22,9 +24,17 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(model => model.ImagePath, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.ImagePath)
+            @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
         Image
         <div class="col-md-10">
-            <input type="file" class="form-control" name="file" accept="*" required />
+            <input type="file" class="form-control" name="file" accept="*" />
         </div>
     </div>
 
@@ -42,7 +52,14 @@
             <select class="form-control" id="CategoryId" name="CategoryId">
                 @foreach (var item in ViewBag.lstCate)
                 {
-                    <option value="@item.Id">@item.Name</option>
+                    if (item.Id == Model.CategoryId)
+                    {
+                        <option value="@item.Id" selected>@item.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
                 }
             </select>
             @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
@@ -78,7 +95,7 @@
     <div class="form-group mt-3">
         <div class="row">
             <a class="col-md-2 btn btn-danger w-auto" style="margin-left:40%" href="/Foods/">Back to Foods</a>
-            <input type="submit" value="Create" class="col-md-2 btn btn-outline-primary w-auto ms-5" />
+            <input type="submit" value="Save" class="col-md-2 btn btn-outline-primary w-auto ms-5" />
         </div>
     </div>
 </div>

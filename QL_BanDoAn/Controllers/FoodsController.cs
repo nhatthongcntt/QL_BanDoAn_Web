@@ -29,7 +29,7 @@ namespace QL_BanDoAn.Controllers
         {
             client = new FireSharp.FirebaseClient(config);
             FirebaseResponse response = client.Get("Foods");
-            var data = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(response.Body);
+            var data = JsonConvert.DeserializeObject<List<Foods>>(response.Body);
             var list = new List<Foods>();
 
             foreach (var item in data)
@@ -53,6 +53,18 @@ namespace QL_BanDoAn.Controllers
 
         public ActionResult Create()
         {
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Get("Category");
+            var data = JsonConvert.DeserializeObject<List<Category>>(response.Body);
+            var list = new List<Category>();
+
+            foreach (var item in data)
+            {
+                var cate = JsonConvert.DeserializeObject<Category>(JsonConvert.SerializeObject(item));
+                list.Add(cate);
+            }
+
+            ViewBag.lstCate = list;
             return View();
         }
 
@@ -77,6 +89,9 @@ namespace QL_BanDoAn.Controllers
             {
                 int latestId = await GetLatestFoodId();
                 foods.Id = latestId + 1;
+                foods.PriceId = await getPriceId(foods.Price);
+                foods.TimeId = await getTimeId(foods.TimeValue);
+
                 await addFoodToFirebase(foods);
                 ModelState.AddModelError(string.Empty, "Added Successfully");
             }
@@ -85,22 +100,55 @@ namespace QL_BanDoAn.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            
-            return View();
+
+            return RedirectToAction("Index");
+        }
+        private async Task<int> getPriceId(double price)
+        {
+            int kq = -1;
+
+            if (price <= 10)
+                kq = 0;
+            else if (price <= 30)
+                kq = 1;
+            else
+                kq = 2;
+
+            return kq;
+        }
+
+        private async Task<int> getTimeId(int time)
+        {
+            int kq = -1;
+
+            if (time <= 10)
+                kq = 0;
+            else if (time <= 30)
+                kq = 1;
+            else
+                kq = 2;
+
+            return kq;
         }
 
         private async Task<int> GetLatestFoodId()
         {
             client = new FireSharp.FirebaseClient(config);
             FirebaseResponse response = client.Get("Foods");
-            var data = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(response.Body);
+            var data = JsonConvert.DeserializeObject<List<Foods>>(response.Body);
             var list = new List<Foods>();
             var idMax = 0;
             foreach (var item in data)
             {
                 var food = JsonConvert.DeserializeObject<Foods>(JsonConvert.SerializeObject(item));
-                if (food.Id > idMax)
-                    idMax = food.Id;
+                if (food == null)
+                    continue;
+                else
+                {
+                    if (food.Id > idMax)
+                        idMax = food.Id;
+                }
+
             }
             return idMax;
         }
@@ -144,7 +192,7 @@ namespace QL_BanDoAn.Controllers
         public ActionResult Delete(string id)
         {
             client = new FireSharp.FirebaseClient(config);
-            FirebaseResponse response = client.Get("Foods/"+id);
+            FirebaseResponse response = client.Get("Foods/" + id);
             Foods data = response.ResultAs<Foods>();
 
             return View(data);
@@ -163,7 +211,7 @@ namespace QL_BanDoAn.Controllers
             {
                 client = new FireSharp.FirebaseClient(config);
                 FirebaseResponse response = client.Get("Foods");
-                var data = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(response.Body);
+                var data = JsonConvert.DeserializeObject<List<Foods>>(response.Body);
                 var list = new List<Foods>();
 
                 // Cập nhật các món ăn có CategoryId trùng với id thành 7
@@ -186,22 +234,67 @@ namespace QL_BanDoAn.Controllers
 
         public ActionResult GetFoodByCategoryId(int id)
         {
-           
-                client = new FireSharp.FirebaseClient(config);
-                FirebaseResponse response = client.Get("Foods");
-                var data = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(response.Body);
-                var list = new List<Foods>();
 
-                
-                foreach (var item in data)
-                {
-                    var food = JsonConvert.DeserializeObject<Foods>(JsonConvert.SerializeObject(item));
-                    if(food.CategoryId==id)
-                        list.Add(food);
-                }
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Get("Foods");
+            var data = JsonConvert.DeserializeObject<List<Foods>>(response.Body);
+            var list = new List<Foods>();
+
+
+            foreach (var item in data)
+            {
+                var food = JsonConvert.DeserializeObject<Foods>(JsonConvert.SerializeObject(item));
+                if (food.CategoryId == id)
+                    list.Add(food);
+            }
 
             return View(list);
-           
+
+        }
+
+        private static string oldImagePath = "";
+        public ActionResult Edit(string id)
+        {
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Get("Foods/" + id);
+            Foods data = response.ResultAs<Foods>();
+            oldImagePath = data.ImagePath;
+
+            FirebaseResponse response2 = client.Get("Category");
+            var data2 = JsonConvert.DeserializeObject<List<Category>>(response2.Body);
+            var list2 = new List<Category>();
+
+            foreach (var item in data2)
+            {
+                var cate = JsonConvert.DeserializeObject<Category>(JsonConvert.SerializeObject(item));
+                list2.Add(cate);
+            }
+
+            ViewBag.lstCate = list2;
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(Foods foods, HttpPostedFileBase file)
+        {
+            FileStream stream;
+            if (file != null)
+            {
+                string path = Path.Combine(Server.MapPath("~/Content/images/"), file.FileName);
+                file.SaveAs(path);
+                stream = new FileStream(Path.Combine(path), FileMode.Open);
+                foods.ImagePath = await Upload(stream, file.FileName);
+            }
+            else
+                foods.ImagePath = oldImagePath;
+
+            foods.PriceId = await getPriceId(foods.Price);
+            foods.TimeId = await getTimeId(foods.TimeValue);
+
+            client = new FireSharp.FirebaseClient(config);
+            SetResponse response = client.Set("Foods/" + foods.Id, foods);
+            return RedirectToAction("Index");
         }
     }
 }

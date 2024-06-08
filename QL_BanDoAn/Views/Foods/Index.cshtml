@@ -1,5 +1,5 @@
 ﻿@model List<QL_BanDoAn.Models.Foods>
-
+@using System.Web.Routing
 @{
     ViewBag.Title = "Foods";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
@@ -15,13 +15,17 @@
     </tr>
     @foreach (var item in Model)
     {
+        if (item == null)
+        {
+            continue;
+        }
         <tr>
             <td>
-                <a href="/Foods/Detail/@item.Id/">@Html.DisplayFor(model => item.Title)</a> 
+                <a href="/Foods/Detail/@item.Id/">@Html.DisplayFor(model => item.Title)</a>
             </td>
             <td>$ @Html.DisplayFor(model => item.Price)</td>
             <td>
-                <a href="#">Edit</a> |
+                <a href="/Foods/Edit/@item.Id">Edit</a> |
                 <a href="/Foods/Delete/@item.Id">Delete</a>
             </td>
         </tr>
