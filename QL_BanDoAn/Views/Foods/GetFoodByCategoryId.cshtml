@@ -1,0 +1,31 @@
+﻿@model List<QL_BanDoAn.Models.Foods>
+
+@{
+    ViewBag.Title = "GetFoodByCategory";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+
+
+<h2>Thực phẩm trong danh mục</h2>
+
+<table class="table table-bordered w-75 m-auto mt-3">
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="/Foods/Detail/@item.Id/">@Html.DisplayFor(model => item.Title)</a>
+            </td>
+            <td>$ @Html.DisplayFor(model => item.Price)</td>
+            <td>
+                <a href="#">Edit</a> |
+                <a href="/Foods/Delete/@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

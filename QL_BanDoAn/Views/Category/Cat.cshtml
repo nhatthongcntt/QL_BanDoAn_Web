@@ -2,7 +2,7 @@
 @model List<QL_BanDoAn.Models.Category>
 @{
     ViewBag.Title = "Cat";
-    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
 
@@ -10,22 +10,29 @@
 <h2>Category</h2>
 
 <table class="table table-bordered">
+    <a href="/Category/Create/">Create new category</a>
     <tr>
-        <th>Tên</th>        
+        <th>Tên</th>
         <th>Action</th>
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
-            
-            <td>@Html.DisplayFor(model => item.Name)</td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
-                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm" })
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
-            </td>
+        if (item != null)
+        {
+            <tr>
 
-        </tr>
+                <td>@Html.DisplayFor(model => item.Name)</td>
+                <td>
+
+                    @Html.ActionLink("View Foods", "GetFoodByCategoryId","Foods", new { id = item.Id }, new { @class = "btn btn-info btn-sm" })
+
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+
+            </tr>
+        }
     }
 </table>
 

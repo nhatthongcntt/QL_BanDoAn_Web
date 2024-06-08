@@ -12,6 +12,7 @@ using System.Threading;
 using Firebase.Storage;
 using System.Threading.Tasks;
 
+
 namespace QL_BanDoAn.Controllers
 {
     public class FoodsController : Controller
@@ -155,6 +156,52 @@ namespace QL_BanDoAn.Controllers
             client = new FireSharp.FirebaseClient(config);
             FirebaseResponse response = client.Delete("/Foods/" + foods.Id);
             return RedirectToAction("Index");
+        }
+        public async Task UpdateFoodCategoryId(string id)
+        {
+            try
+            {
+                client = new FireSharp.FirebaseClient(config);
+                FirebaseResponse response = client.Get("Foods");
+                var data = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(response.Body);
+                var list = new List<Foods>();
+
+                // Cập nhật các món ăn có CategoryId trùng với id thành 7
+                foreach (var item in data)
+                {
+                    var food = JsonConvert.DeserializeObject<Foods>(JsonConvert.SerializeObject(item));
+                    if (food.CategoryId.ToString() == id)
+                    {
+                        food.CategoryId = 7;
+                        await client.UpdateAsync($"Foods/{food.Id}", food);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ nếu cần
+            }
+        }
+
+
+        public ActionResult GetFoodByCategoryId(int id)
+        {
+           
+                client = new FireSharp.FirebaseClient(config);
+                FirebaseResponse response = client.Get("Foods");
+                var data = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(response.Body);
+                var list = new List<Foods>();
+
+                
+                foreach (var item in data)
+                {
+                    var food = JsonConvert.DeserializeObject<Foods>(JsonConvert.SerializeObject(item));
+                    if(food.CategoryId==id)
+                        list.Add(food);
+                }
+
+            return View(list);
+           
         }
     }
 }

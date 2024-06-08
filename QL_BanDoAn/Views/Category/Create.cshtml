@@ -1,0 +1,24 @@
+﻿@model QL_BanDoAn.Models.Category
+
+@{
+    ViewBag.Title = "Create Category";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<h2>Create Category</h2>
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+@using (Html.BeginForm("Create", "Category", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ImagePath)
+        @Html.TextBoxFor(model => model.ImagePath, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Category</button>
+}
