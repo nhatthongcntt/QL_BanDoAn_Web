@@ -9,5 +9,6 @@ namespace QL_BanDoAn.Models
     {
         public int Id { get; set; }
         public string Value { get; set; }
+       
     }
 }

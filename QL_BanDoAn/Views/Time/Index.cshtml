@@ -1,0 +1,34 @@
+﻿@model List<QL_BanDoAn.Models.Time>
+@{
+    ViewBag.Title = "Delete Category";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+
+
+<h2 class="text-center">Time</h2>
+<a href="/Time/Create/" style="margin-left:15%;">Create new time</a>
+<table class="table table-bordered w-75 m-auto mt-3">
+    <tr>
+        <th>Id</th>
+        <th>Value</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        if (item == null)
+        {
+            continue;
+        }
+        <tr>
+            <td>
+                <a href="/Time/Detail/@item.Id/">@Html.DisplayFor(model => item.Id)</a>
+            </td>
+            <td>$ @Html.DisplayFor(model => item.Value)</td>
+            <td>
+                <a href="/Time/Edit/@item.Id">Edit</a> |
+                <a href="/Time/Delete/@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
