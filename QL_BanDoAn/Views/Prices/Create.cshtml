@@ -1,0 +1,34 @@
+﻿@model QL_BanDoAn.Models.Price
+
+@{
+    ViewBag.Title = "Create Price";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<h2 class="text-center">Create Price</h2>
+
+@using (Html.BeginForm("Create", "Prices", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!--Thêm các trường khác nếu cần thiết-->
+
+        <div class="form-group mt-3">
+            <div class="row">
+                <a class="col-md-2 btn btn-danger w-auto" style="margin-left:40%" href="/Prices/">Back to Prices</a>
+                <input type="submit" value="Create" class="col-md-2 btn btn-outline-primary w-auto ms-5" />
+            </div>
+        </div>
+    </div>
+}

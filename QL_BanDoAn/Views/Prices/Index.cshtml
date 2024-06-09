@@ -1,0 +1,32 @@
+﻿@model List<QL_BanDoAn.Models.Price>
+@{
+    ViewBag.Title = "Delete Price";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<h2 class="text-center">Prices</h2>
+<a href="/Prices/Create/" style="margin-left:15%;">Create new price</a>
+<table class="table table-bordered w-75 m-auto mt-3">
+    <tr>
+        <th>Id</th>
+        <th>Value</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        if (item == null)
+        {
+            continue;
+        }
+        <tr>
+            <td>
+                <a href="/Prices/Detail/@item.Id/">@Html.DisplayFor(model => item.Id)</a>
+            </td>
+            <td>$ @Html.DisplayFor(model => item.Value)</td>
+            <td>
+                <a href="/Prices/Edit/@item.Id">Edit</a> |
+                <a href="/Prices/Delete/@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,36 @@
+﻿@model QL_BanDoAn.Models.Price
+
+@{
+    ViewBag.Title = "Delete Price";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<h2 class="text-center">Delete Price</h2>
+
+<div class="container">
+    <h4>Are you sure you want to delete this price?</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Value
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Prices", new { id = Model.Id }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a href="/Prices/" class="btn btn-default">Cancel</a>
+        </div>
+    }
+</div>

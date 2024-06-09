@@ -12,11 +12,16 @@ namespace QL_BanDoAn
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            routes.MapRoute(
+                name: "Prices",
+                url: "Prices/Index",
+                defaults: new { controller = "Prices", action = "Index" }
+            );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+
             );
         }
     }
